@@ -1,3 +1,76 @@
+workflow
+Command execution (Terminal)
+    │
+    ▼
+┌───────────────────────────────────┐
+│ /exo/main.py                      │
+│ - main() function                 │
+│ - Parses command line arguments   │
+│ - Sets up inference_engine        │
+└───────────────┬───────────────────┘
+                │
+                ▼
+┌───────────────────────────────────┐
+│ /exo/inference/inference_engine.py│
+│ - use_medusa() method             │
+│ - Configures Medusa parameters:   │
+│   heads=4, tree_size=5,           │
+│   candidates=5                    │
+└───────────────┬───────────────────┘
+                │
+                ▼
+┌───────────────────────────────────┐
+│ /exo/models/__init__.py           │
+│ - get_repo() function             │
+│ - Downloads model shards          │
+└───────────────┬───────────────────┘
+                │
+                ▼
+┌───────────────────────────────────┐
+│ /exo/inference/shard.py           │
+│ - Shard class                     │
+│ - Loads the model weights         │
+└───────────────┬───────────────────┘
+                │
+                ▼
+┌───────────────────────────────────┐
+│ /exo/inference/medusa_decoder.py  │
+│ - MedusaDecoder.__init__()        │
+│ - Sets probability_threshold=0.5  │
+│ - Line ~158: threshold config     │
+└───────────────┬───────────────────┘
+                │
+                ▼
+┌───────────────────────────────────┐
+│ /exo/inference/medusa_decoder.py  │
+│ - MedusaDecoder.generate()        │
+│ - Processes prompt                │
+│ - Starts token generation loop    │
+└───────────────┬───────────────────┘
+                │
+                ▼
+┌───────────────────────────────────┐
+│ /exo/inference/medusa_decoder.py  │
+│ - generate_candidates()           │
+│ - Line ~695: Filters tokens based │
+│   on probability threshold        │
+│ - Applies 0.5 threshold filter    │
+└───────────────┬───────────────────┘
+                │
+                ▼
+┌───────────────────────────────────┐
+│ /exo/inference/medusa_decoder.py  │
+│ - evaluate_posterior()            │
+│ - Line ~822: Uses filtered tokens │
+│ - All tokens <unk> at this point  │
+└───────────────┬───────────────────┘
+                │
+                ▼
+┌───────────────────────────────────┐
+│ /exo/inference/tokenizers.py      │
+│ - Converts tokens to text         │
+│ - Outputs <unk> tokens            │
+└───────────────────────────────────┘
 # Detailed Documentation: Implementing Medusa in the Exo Framework
 # Medusa Ultra Enhanced: Medusa Decoder with Probability Threshold Filtering
 
